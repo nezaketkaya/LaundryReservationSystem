@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace LaundryReservationSystem.Models
 {
@@ -22,6 +23,9 @@ namespace LaundryReservationSystem.Models
 
         public string MachineType { get; set; }
         public int MachineNumber { get; set; }
+
+
+        
 
     }
 }

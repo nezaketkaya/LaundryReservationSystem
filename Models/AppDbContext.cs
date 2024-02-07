@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace LaundryReservationSystem.Models
 {
@@ -13,6 +14,5 @@ namespace LaundryReservationSystem.Models
         public DbSet<Machine> Machines { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<UserBooking> UserBooking { get; set; }
-
     }
 }
