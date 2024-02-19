@@ -30,7 +30,7 @@
 
             <div class="form-group">
                 <label asp-for="MachineType" class="control-label">Booking Time:</label>
-                @Html.DropDownList("TimeOptions", (SelectList)ViewBag.TimeOptions, "Select Start Time", new { @class = "form-control" })
+                <input type="time" id="BookingTime" name="booking-time" class="form-control">
                 <span asp-validation-for="BookingTimeStart" class="text-danger"></span>
             </div>
 
@@ -41,8 +41,13 @@
                 <span asp-validation-for="MachineType" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label asp-for="MachineNumber" class="control-label">Machine Number:</label>
+                <select asp-for="MachineNumber" class="form-control" id="MachineNumber"></select>
+                <span asp-validation-for="MachineNumber" class="text-danger"></span>
+            </div>
 
-         
+
 
             <button type="submit" class="btn btn-primary">Create</button>
         </form>
@@ -54,5 +59,27 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('#BookingDate, #BookingTime, #MachineType').change(function () {
+                var date = $('#BookingDate').val();
+                var startTime = $('#BookingTime').val();
+                var machineType = $('#MachineType').val();
+
+                $.ajax({
+                    url: '@Url.Action("GetAvailableMachines", "Booking")',
+                    type: 'POST',
+                    data: { date: date, startTime: startTime, machineType: machineType },
+                    success: function (result) {
+                        var options = '';
+                        $.each(result, function (index, value) {
+                            options += '<option value="' + value + '">' + value + '</option>';
+                        });
+                        $('#MachineNumber').html(options);
+                    }
+                });
+            });
+        });
+    </script>
 }
