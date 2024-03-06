@@ -30,6 +30,9 @@ namespace LaundryReservationSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("AdminCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("AdminName")
                         .HasColumnType("nvarchar(max)");
 
@@ -37,6 +40,9 @@ namespace LaundryReservationSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AdminPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AdminSurame")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -55,11 +61,8 @@ namespace LaundryReservationSystem.Migrations
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("BookingTimeFinish")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("BookingTimeStart")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("BookingTimeStart")
+                        .HasColumnType("time");
 
                     b.Property<int>("MachineNumber")
                         .HasColumnType("int");
@@ -71,6 +74,9 @@ namespace LaundryReservationSystem.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserSurname")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -120,37 +126,12 @@ namespace LaundryReservationSystem.Migrations
                     b.Property<string>("UserPhone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("LaundryReservationSystem.Models.UserBooking", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("BookingTimeFinish")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("BookingTimeStart")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MachineNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MachineType")
+                    b.Property<string>("UserSurname")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserBooking");
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

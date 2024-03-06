@@ -13,6 +13,5 @@ namespace LaundryReservationSystem.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Machine> Machines { get; set; }
         public DbSet<Booking> Bookings { get; set; }
-        public DbSet<UserBooking> UserBooking { get; set; }
     }
 }

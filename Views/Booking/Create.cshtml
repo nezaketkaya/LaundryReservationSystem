@@ -4,6 +4,19 @@
 
 <h4>Booking</h4>
 <hr />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -11,35 +24,53 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control" />
+                <label asp-for="UserName" class="control-label">Name:</label>
+                <input type="text" asp-for="UserName" class="form-control" />
                 <span asp-validation-for="UserName" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="UserPhone" class="control-label"></label>
-                <input asp-for="UserPhone" class="form-control" />
+                <label asp-for="UserSurname" class="control-label">Surname:</label>
+                <input type="text" asp-for="UserSurname" class="form-control" />
+                <span asp-validation-for="UserSurname" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserPhone" class="control-label">Phone:</label>
+                <input type="text" asp-for="UserPhone" pattern="[0-9]+" class="form-control" />
                 <span asp-validation-for="UserPhone" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="BookingDate" class="control-label"></label>
-                <input asp-for="BookingDate" class="form-control" />
+                <label asp-for="BookingDate" class="control-label">Booking Date:</label>
+                <input type="date" asp-for="BookingDate" class="form-control" />
                 <span asp-validation-for="BookingDate" class="text-danger"></span>
             </div>
+            
+            <div class="form-group">
+           
+            <label asp-for="BookingTimeStart" class="control-label">Booking Time:</label>
+            <select asp-for="BookingTimeStart" class="form-control">
+                @for (int hour = 7; hour < 24; hour++)
+                {
+                    <option value="@hour:00">@hour:00</option>
+                }
+            </select>
+
+
 
             <div class="form-group">
-                <label asp-for="MachineType" class="control-label">Booking Time:</label>
-                <input type="time" id="BookingTime" name="booking-time" class="form-control">
-                <span asp-validation-for="BookingTimeStart" class="text-danger"></span>
-            </div>
-
-
-            <div class="form-group">
-                <label asp-for="MachineType" class="control-label">Machine Type:</label>
-                @Html.DropDownList("MachineType", (SelectList)ViewBag.MachineType, "Select Machine Type", new { @class = "form-control" })
+                <label asp-for="MachineType" class="c-label">Machine Type:</label>
+                <select asp-for="MachineType" class="form-control" id="MachineType">
+                    <option value="">Select Machine Type</option>
+                    @foreach (var type in ViewBag.MachineType)
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
                 <span asp-validation-for="MachineType" class="text-danger"></span>
             </div>
+
 
             <div class="form-group">
                 <label asp-for="MachineNumber" class="control-label">Machine Number:</label>
@@ -64,12 +95,12 @@
         $(function () {
             $('#BookingDate, #BookingTime, #MachineType').change(function () {
                 var date = $('#BookingDate').val();
-                var startTime = $('#BookingTime').val();
+                var startTime = $('#BookingTimeStart').val();
                 var machineType = $('#MachineType').val();
 
                 $.ajax({
-                    url: '@Url.Action("GetAvailableMachines", "Booking")',
-                    type: 'POST',
+                    url: '/Booking/GetAvailableMachines',
+                    type: 'GET',
                     data: { date: date, startTime: startTime, machineType: machineType },
                     success: function (result) {
                         var options = '';
@@ -81,5 +112,22 @@
                 });
             });
         });
+
+        $(function () {
+             $('#bookingDate').change(function () {
+                 var selectedDate = new Date($(this).val());
+                  if (selectedDate <= new Date()) {
+                    selectedDate = new Date();
+                }
+                $('#bookingTime').empty();
+                for (var hour = selectedDate.getHours(); hour < 24; hour++) {
+                    $('#bookingTime').append($('<option>', {
+                        value: hour + ':00',
+                        text: hour + ':00'
+                    }));
+                }
+            });
+        });
+
     </script>
 }

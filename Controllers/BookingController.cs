@@ -33,22 +33,19 @@ namespace LaundryReservationSystem.Controllers
             }
         }
 
-        [HttpPost]
-        public IActionResult GetAvailableMachines(DateTime date, DateTime startTime, string machineType)
+        [HttpGet]
+        public IActionResult GetAvailableMachines(DateTime date, TimeSpan startTime, string machineType)
         {
-            var endTime = startTime.Add(TimeSpan.FromHours(1));
 
             var reservedMachines = _dbContext.Bookings
                 .Where(b => b.BookingDate == date &&
-                            ((b.BookingTimeStart >= startTime && b.BookingTimeStart < endTime) ||
-                            (b.BookingTimeFinish > startTime && b.BookingTimeFinish <= endTime) ||
-                            (b.BookingTimeStart <= startTime && b.BookingTimeFinish >= endTime)) &&
+                            b.BookingTimeStart == startTime &&
                         b.MachineType == machineType)
                 .Select(b => b.MachineNumber)
                 .ToList();
 
             var allMachines = _dbContext.Machines
-                .Where(m => m.MachineType == machineType)
+                .Where(m => m.MachineType == machineType && m.isFaulty == false)
                 .Select(m => m.MachineNumber)
                 .ToList();
 
@@ -59,37 +56,36 @@ namespace LaundryReservationSystem.Controllers
 
 
         [HttpGet]
-        public ActionResult Create(DateTime bookingTimeStart, string machineType)
+        public ActionResult Create()
         {
-          
-
             var machineTypes = _dbContext.Machines.Select(m => m.MachineType).Distinct().ToList();
 
-            SelectList machineTypeList = new SelectList(machineTypes, "MachineType");
-            ViewBag.MachineType = machineTypeList;
+            ViewBag.MachineType = machineTypes;
 
           
             return View();
         }
 
         [HttpPost]
-        public ActionResult Create()
+        public ActionResult Create(Booking newBooking)
         {           
-            var newBooking = new Booking();
            
             try
             {
                 if (ModelState.IsValid)
                 {
-
                     _dbContext.Bookings.Add(newBooking);
-                    newBooking.BookingTimeFinish = newBooking.BookingTimeStart.AddHours(1);
+                    
                     _dbContext.SaveChanges();
 
-                    return View();
+                    TempData["SuccessMessage"] = "Reservation has been successfully saved.";
+
+                    return RedirectToAction("Create");
                 }
                 else
                 {
+                    TempData["ErrorMessage"] = "Reservation could not be saved. Please check your inputs.";
+
                     return View(newBooking);
                 }
             }
@@ -103,45 +99,7 @@ namespace LaundryReservationSystem.Controllers
         {
             throw new NotImplementedException();
         }
-
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-     
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
       
-        [HttpPost]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
 
