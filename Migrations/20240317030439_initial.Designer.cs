@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaundryReservationSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240227020337_init")]
-    partial class init
+    [Migration("20240317030439_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
