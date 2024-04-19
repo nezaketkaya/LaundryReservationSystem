@@ -58,7 +58,14 @@
                 <td>@user.UserSurname</td>
                 <td>@user.UserPhone</td>
                 <td>@user.UserPassword</td>
+                <td> 
+                    <form method="post" asp-action="DeleteUser" asp-controller="AdminPage">
+                    <input type="hidden" name="Id" value="@user.Id" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
             </tr>
+            
         }
     </tbody>
 </table>

@@ -59,6 +59,21 @@ namespace LaundryReservationSystem.Controllers
             return View(newUser);
         }
 
+        [HttpPost]
+        public IActionResult DeleteUser(User userD)
+        {
+            var user = _dbContext.Users.Find(userD.Id);
+            if (user != null)
+            {
+                _dbContext.Users.Remove(user);
+                _dbContext.SaveChanges();
+
+                return RedirectToAction("AddUser");
+            }
+
+            return RedirectToAction("AddUser");
+        }
+
 
     }
 }

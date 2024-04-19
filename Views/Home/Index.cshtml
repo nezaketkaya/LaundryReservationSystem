@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Makine Rezervasyon Sistemi</title>
+    <title>Laundry Reservations</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,8 +12,37 @@
     <div class="container">
 
         <header>
-            <h1>Makine Rezervasyon Sistemi</h1>
+            <h1>Laundry Reservations</h1>
         </header>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Phone</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Machine Type</th>
+                    <th>Machine Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in ViewBag.BookingsInfo)
+                {
+                    <tr>
+                        <td>@booking.UserName</td>
+                        <td>@booking.UserSurname</td>
+                        <td>@booking.UserPhone</td>
+                        <td>@booking.BookingDate.ToString("yyyy-MM-dd")</td>
+                        <td>@booking.BookingTimeStart</td>
+                        <td>@booking.MachineType</td>
+                        <td>@booking.MachineNumber</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+
 
 
     </div>

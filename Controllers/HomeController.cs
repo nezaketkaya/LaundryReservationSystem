@@ -6,15 +6,18 @@ namespace LaundryReservationSystem.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AppDbContext _dbContext;
+        public HomeController(AppDbContext dbContext)
         {
-            _logger = logger;
+            _dbContext = dbContext;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
+            var bookings = _dbContext.Bookings.ToList();
+            ViewBag.BookingsInfo = bookings;
             return View();
         }
 

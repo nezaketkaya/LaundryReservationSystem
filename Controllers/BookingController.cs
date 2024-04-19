@@ -19,19 +19,7 @@ namespace LaundryReservationSystem.Controllers
         {
             return View();
         }
-        private void CheckMachineStatus(Machine machine)
-        {
-
-            if (machine.IsRunning)
-            {
-
-            }
-
-            if (machine.isFaulty)
-            {
-                
-            }
-        }
+        
 
         [HttpGet]
         public IActionResult GetAvailableMachines(DateTime date, TimeSpan startTime, string machineType)
